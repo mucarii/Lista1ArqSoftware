@@ -53,25 +53,26 @@ Utilizado para a funcionalidade de busca, permitindo variar o algoritmo de busca
    ```bash
    node <gerenciamento.js>
    ```
+
 4. O menu CLI será exibido no terminal. Siga as instruções para adicionar, remover, listar ou buscar contatos.
 
 ## Exemplo de Uso
 
-```bash
-    Escolha uma opção:
-   1. Adicionar contato
-   2. Remover contato
-   3. Listar contatos
-   4. Buscar contato por nome
-   5. Sair
-```
+   ```bash
+   Escolha uma opção:
+    1. Adicionar contato
+    2. Remover contato
+    3. Listar contatos
+    4. Buscar contato por nome
+    5. Sair
+   ```
 
 Escolha uma das opções digitando o número correspondente e siga as instruções.
 
 ## Estrutura de Arquivos
 
- - index.js: Arquivo principal do sistema, contém todas as classes e a lógica de CLI.
- - README.md: Este arquivo, com a documentação do projeto.
+- index.js: Arquivo principal do sistema, contém todas as classes e a lógica de CLI.
+- README.md: Este arquivo, com a documentação do projeto.
 
 ## Autores
 
