@@ -56,14 +56,15 @@ Utilizado para a funcionalidade de busca, permitindo variar o algoritmo de busca
 4. O menu CLI será exibido no terminal. Siga as instruções para adicionar, remover, listar ou buscar contatos.
 
 ## Exemplo de Uso
-    ```bash
+
+```bash
     Escolha uma opção:
    1. Adicionar contato
    2. Remover contato
    3. Listar contatos
    4. Buscar contato por nome
    5. Sair
-   ```
+```
 
 Escolha uma das opções digitando o número correspondente e siga as instruções.
 
