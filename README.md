@@ -64,6 +64,7 @@ Utilizado para a funcionalidade de busca, permitindo variar o algoritmo de busca
    4. Buscar contato por nome
    5. Sair
    ```
+
 Escolha uma das opções digitando o número correspondente e siga as instruções.
 
 ## Estrutura de Arquivos
