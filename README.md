@@ -18,7 +18,7 @@ Strategy (Comportamental): Para implementar diferentes algoritmos de busca que p
 O Padrão Decorator é um padrão de design estrutural que permite adicionar funcionalidades adicionais a objetos de forma dinâmica, sem alterar sua estrutura original. Isso é especialmente útil para estender funcionalidades de classes de maneira flexível e reutilizável.
 
 #### Justificativa para Uso
-No contexto do sistema de gerenciamento de contatos, o padrão Decorator permite adicionar funcionalidades adicionais (como logging, autenticação, validação, etc.) ao GerenciadorContatos sem modificar sua implementação original. Isso promove a abertura para extensão e fechamento para modificação, um dos princípios SOLID.
+No sistema de gerenciamento de contatos, o padrão Decorator permite adicionar funcionalidades adicionais (como logging, autenticação, validação, etc.) ao GerenciadorContatos sem modificar sua implementação original.
 
 ### Padrão Comportamental: Strategy
 #### Definição
