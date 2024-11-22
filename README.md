@@ -1,6 +1,6 @@
 # Sistema de Gerenciamento de Contatos
 
-Este projeto é um sistema simples de gerenciamento de contatos, implementado em JavaScript e usando uma interface de linha de comando (CLI). O sistema permite aos usuários adicionar, remover, listar e buscar contatos, com funcionalidades baseadas em padrões de projeto para garantir flexibilidade e extensibilidade do código.
+Este projeto é um sistema simples de gerenciamento de contatos, implementado em Python e usando uma interface de linha de comando (CLI). O sistema permite aos usuários adicionar, remover, listar e buscar contatos, com funcionalidades baseadas em padrões de projeto para garantir flexibilidade e extensibilidade do código.
 
 ## Visão Geral
 
