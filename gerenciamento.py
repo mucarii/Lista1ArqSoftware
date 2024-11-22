@@ -15,14 +15,14 @@ from abc import ABC, abstractmethod
 
 class EstrategiaBusca(ABC):
     @abstractmethod
-    def buscar(self, contatos, termo):
+    def buscar(self, contatos, busca):
         pass
 
 
 class EstrategiaBuscaPorNome(EstrategiaBusca):
-    def buscar(self, contatos, termo):
+    def buscar(self, contatos, busca):
         return [
-            contato for contato in contatos if termo.lower() in contato.nome.lower()
+            contato for contato in contatos if busca.lower() in contato.nome.lower()
         ]
 
 
@@ -45,11 +45,11 @@ class GerenciadorContatos:
     def set_estrategia_busca(self, estrategia):
         self.estrategia_busca = estrategia
 
-    def buscar_contato(self, termo):
+    def buscar_contato(self, busca):
         if not self.estrategia_busca:
             print("Estratégia de busca não definida.")
             return []
-        return self.estrategia_busca.buscar(self.contatos, termo)
+        return self.estrategia_busca.buscar(self.contatos, busca)
 
 
 # Padrão Decorator
@@ -69,8 +69,8 @@ class DecoratorGerenciadorContatos:
     def set_estrategia_busca(self, estrategia):
         self.gerenciador.set_estrategia_busca(estrategia)
 
-    def buscar_contato(self, termo):
-        return self.gerenciador.buscar_contato(termo)
+    def buscar_contato(self, busca):
+        return self.gerenciador.buscar_contato(busca)
 
 
 # Decorator  que adiciona funcionalidade de logging
@@ -119,8 +119,8 @@ def listar_contatos(gerenciador):
 
 
 def buscar_contato(gerenciador):
-    termo = input("Nome do contato a buscar: ")
-    resultados = gerenciador.buscar_contato(termo)
+    busca = input("Nome do contato a buscar: ")
+    resultados = gerenciador.buscar_contato(busca)
     if resultados:
         print("Contatos encontrados:")
         for contato in resultados:
