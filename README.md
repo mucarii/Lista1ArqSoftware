@@ -254,7 +254,7 @@ A interface de linha de comando fornece uma interação simples e direta para qu
 ## Estrutura de Arquivos
 
 - gerenciamento.py: Arquivo principal do sistema, contém todas as classes e a lógica de CLI.
-- README.md: Este arquivo, com a documentação do projeto.
+- README.md: Documentação do projeto.
 
 ## Autores
 

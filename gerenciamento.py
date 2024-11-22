@@ -104,13 +104,13 @@ def adicionar_contato(gerenciador):
     email = input("Email: ")
     contato = Contato(nome, telefone, email)
     gerenciador.adicionar_contato(contato)
-    print("Contato adicionado com sucesso!")
+    print("Contato adicionado com sucesso")
 
 
 def remover_contato(gerenciador):
     nome = input("Nome do contato a ser removido: ")
     gerenciador.remover_contato(nome)
-    print("Contato removido com sucesso!")
+    print("Contato removido com sucesso")
 
 
 def listar_contatos(gerenciador):
@@ -148,10 +148,10 @@ def main():
         elif opcao == "4":
             buscar_contato(gerenciador_com_log)
         elif opcao == "5":
-            print("Saindo do sistema. Até logo!")
+            print("Saindo do sistema.")
             break
         else:
-            print("Opção inválida! Por favor, tente novamente.")
+            print("Opção inválida. Por favor, tente novamente.")
 
 
 if __name__ == "__main__":
