@@ -2,78 +2,262 @@
 
 Este projeto é um sistema simples de gerenciamento de contatos, implementado em JavaScript e usando uma interface de linha de comando (CLI). O sistema permite aos usuários adicionar, remover, listar e buscar contatos, com funcionalidades baseadas em padrões de projeto para garantir flexibilidade e extensibilidade do código.
 
-## Funcionalidades
+## Visão Geral
 
-- **Adicionar Contato:** Permite adicionar um novo contato com nome, telefone e e-mail.
-- **Remover Contato:** Remove um contato da lista pelo nome.
-- **Listar Contatos:** Exibe todos os contatos adicionados.
-- **Buscar Contato:** Busca um contato pelo nome, com flexibilidade para diferentes algoritmos de busca no futuro.
+O sistema de gerenciamento de contatos permite que usuários adicionem, removam, listem e busquem contatos. Para garantir que o sistema seja flexível e facilmente extensível, foram aplicados dois padrões de projeto:
 
-## Tecnologias e Ferramentas Utilizadas
+Decorator (Estrutural): Para estender as funcionalidades do gerenciador de contatos sem modificar sua implementação original.
+Strategy (Comportamental): Para implementar diferentes algoritmos de busca que podem ser trocados dinamicamente.
 
-- **JavaScript (Node.js):** Linguagem principal do projeto.
-- **CLI (Command Line Interface):** Interação com o usuário via terminal.
 
 ## Padrões de Projeto Utilizados
 
-### 1. Decorator (Estrutural)
+#### Padrão Estrutural: Decorator
+#### Definição
+O Padrão Decorator é um padrão de design estrutural que permite adicionar funcionalidades adicionais a objetos de forma dinâmica, sem alterar sua estrutura original. Isso é especialmente útil para estender funcionalidades de classes de maneira flexível e reutilizável.
 
-**Motivação:**  
-Aplicado ao `GerenciadorContatos` para permitir que funcionalidades extras sejam adicionadas sem modificar o código original. Com o padrão **Decorator**, é possível criar decoradores que estendam as funcionalidades de `GerenciadorContatos`, como adicionar logs ou validações adicionais, sem alterar o código base.
+#### Justificativa para Uso
+No contexto do sistema de gerenciamento de contatos, o padrão Decorator permite adicionar funcionalidades adicionais (como logging, autenticação, validação, etc.) ao GerenciadorContatos sem modificar sua implementação original. Isso promove a abertura para extensão e fechamento para modificação, um dos princípios SOLID.
 
-**Benefícios:**
-- Facilita a extensão do gerenciador de contatos.
-- Mantém o código original desacoplado de funcionalidades adicionais.
-- Permite a criação de "camadas" de funcionalidades para o gerenciamento de contatos.
+## Padrão Comportamental: Strategy
+### Definição
+O Padrão Strategy é um padrão de design comportamental que define uma família de algoritmos, encapsula cada um deles e os torna intercambiáveis. Isso permite que o algoritmo varie independentemente dos clientes que o utilizam.
 
-### 2. Strategy (Comportamental)
 
-**Motivação:**  
-Utilizado para a funcionalidade de busca, permitindo variar o algoritmo de busca independentemente da implementação principal de `GerenciadorContatos`. Atualmente, foi implementada uma estratégia de busca por nome, mas outras estratégias de busca podem ser facilmente adicionadas (por e-mail, telefone, etc).
+### Justificativa para Uso
+Para a funcionalidade de busca de contatos, diferentes estratégias podem ser necessárias (por nome, email, telefone, etc.). O padrão Strategy permite que diferentes algoritmos de busca sejam implementados e trocados dinamicamente no GerenciadorContatos sem alterar sua lógica interna.
 
-**Benefícios:**
-- Flexibilidade para trocar o algoritmo de busca.
-- Mantém o código modular e aberto a novas estratégias de busca.
-- Facilita a implementação de diferentes tipos de filtros de busca no futuro.
+## Descrição das Classes
 
-## Estrutura do Código
+### Classe Contato
 
-- **Contato:** Representa um contato com os atributos `nome`, `telefone` e `email`.
-- **GerenciadorContatos:** Classe principal para gerenciamento dos contatos (adicionar, remover, listar).
-- **GerenciadorContatosDecorator:** Implementa o padrão Decorator para extensibilidade do gerenciador.
-- **EstrategiaBuscaPorNome:** Implementa o padrão Strategy para a busca de contatos pelo nome.
-- **CLI:** Interface de linha de comando para interagir com o usuário, com opções para adicionar, remover, listar e buscar contatos.
+#### Descrição
+- Responsabilidade: Representa um contato com atributos essenciais: nome, telefone e email.
+- Métodos:
+   - __init__: Inicializa os atributos do contato.
+   - __str__: Retorna uma representação em string do contato para facilitar a exibição.
 
-## Como Usar
+### Padrão Strategy: Busca de Contatos
+### Classes Envolvidas
+#### 1. Classe Abstrata EstrategiaBusca
 
-1. Clone o repositório e navegue até a pasta do projeto.
-2. Instale as dependências (apenas o `readline` do Node.js é necessário para a CLI).
-3. Execute o arquivo principal do projeto:
+   ```python
+        from abc import ABC, abstractmethod
+        class EstrategiaBusca(ABC):
+        @abstractmethod
+        def buscar(self, contatos, termo):
+        pass
 
-   ```bash
-   node <gerenciamento.js>
    ```
+- Descrição: Define a interface para as estratégias de busca.
+- Métodos:
 
-4. O menu CLI será exibido no terminal. Siga as instruções para adicionar, remover, listar ou buscar contatos.
+    - __buscar__: Método abstrato que deve ser implementado por todas as estratégias concretas.
+#### 2. Classe Concreta EstrategiaBuscaPorNome
+   
+        class EstrategiaBuscaPorNome(EstrategiaBusca):
+        def buscar(self, contatos, termo):
+        return [
+            contato for contato in contatos if termo.lower() in contato.nome.lower()
+        ]
+   
+- Descrição: Implementa a estratégia de busca por nome.
+- Métodos:
+    - buscar: Filtra a lista de contatos onde o termo de busca está presente no nome do contato (case-insensitive).
+    
+#### Implementação no Sistema
+A classe GerenciadorContatos utiliza uma instância de EstrategiaBusca para realizar buscas. Isso permite que diferentes estratégias de busca sejam aplicadas sem modificar a classe GerenciadorContatos.
 
-## Exemplo de Uso
+#### Classe GerenciadorContatos
+    
+    class GerenciadorContatos:
+    def __init__(self):
+        self.contatos = []
+        self.estrategia_busca = None
 
-   ```bash
-   Escolha uma opção:
+    def adicionar_contato(self, contato):
+        self.contatos.append(contato)
+
+    def remover_contato(self, nome):
+        self.contatos = [contato for contato in self.contatos if contato.nome != nome]
+
+    def listar_contatos(self):
+        for contato in self.contatos:
+            print(contato)
+
+    def set_estrategia_busca(self, estrategia):
+        self.estrategia_busca = estrategia
+
+    def buscar_contato(self, termo):
+        if not self.estrategia_busca:
+            print("Estratégia de busca não definida.")
+            return []
+        return self.estrategia_busca.buscar(self.contatos, termo)
+
+### Descrição
+Responsabilidade: Gerencia a lista de contatos, fornecendo métodos para adicionar, remover, listar e buscar contatos.
+
+#### Atributos:
+- contatos: Lista que armazena instâncias de Contato.
+- estrategia_busca: Instância de EstrategiaBusca que define a estratégia de busca a ser utilizada.
+
+#### Métodos:
+- adicionar_contato: Adiciona um novo contato à lista.
+- remover_contato: Remove um contato pelo nome.
+- listar_contatos: Lista todos os contatos armazenados.
+- set_estrategia_busca: Define a estratégia de busca a ser utilizada.
+- buscar_contato: Realiza a busca de contatos utilizando a estratégia definida.
+
+### Padrão Decorator: Extensão do Gerenciador de Contatos
+
+#### Classe DecoratorGerenciadorContatos
+
+    class DecoratorGerenciadorContatos:
+    def __init__(self, gerenciador):
+        self.gerenciador = gerenciador
+
+    def adicionar_contato(self, contato):
+        self.gerenciador.adicionar_contato(contato)
+
+    def remover_contato(self, nome):
+        self.gerenciador.remover_contato(nome)
+
+    def listar_contatos(self):
+        self.gerenciador.listar_contatos()
+
+    def set_estrategia_busca(self, estrategia):
+        self.gerenciador.set_estrategia_busca(estrategia)
+
+    def buscar_contato(self, termo):
+        return self.gerenciador.buscar_contato(termo)
+
+
+#### Descrição
+- Responsabilidade: Serve como classe base para decorators que desejam estender as funcionalidades de GerenciadorContatos.
+#### Atributos:
+- gerenciador: Instância de GerenciadorContatos ou outro decorator.
+- Métodos: Delegam as chamadas para a instância encapsulada de gerenciador, permitindo que subclasses adicionem funcionalidades adicionais.
+
+### Implementação do Decorator Concreto
+#### Classe GerenciadorComLog
+    class GerenciadorComLog(DecoratorGerenciadorContatos):
+        def adicionar_contato(self, contato):
+        print(f"[LOG] Adicionando contato: {contato.nome}")
+        super().adicionar_contato(contato)
+
+        def remover_contato(self, nome):
+        print(f"[LOG] Removendo contato: {nome}")
+        super().remover_contato(nome)
+#### Descrição
+- Responsabilidade: Adiciona funcionalidades de logging às operações de adicionar e remover contatos.
+#### Métodos:
+- adicionar_contato: Imprime uma mensagem de log antes de adicionar o contato.
+- remover_contato: Imprime uma mensagem de log antes de remover o contato.
+#### Herança: 
+- Herda de DecoratorGerenciadorContatos e, por meio de delegação, adiciona funcionalidades sem alterar a implementação original de GerenciadorContatos.
+
+## Interface de Linha de Comando (CLI)
+A interface de linha de comando fornece uma interação simples e direta para que os usuários possam realizar operações no sistema de gerenciamento de contatos.
+
+### Funções da CLI
+#### mostrar_menu
+    
+    def mostrar_menu():
+    print(
+        """
+    Escolha uma opção:
     1. Adicionar contato
     2. Remover contato
     3. Listar contatos
     4. Buscar contato por nome
     5. Sair
-   ```
+    """
+        )
+        
+#### Descrição: 
+- Exibe as opções disponíveis para o usuário.
 
-Escolha uma das opções digitando o número correspondente e siga as instruções.
+#### adicionar_contato
+    def adicionar_contato(gerenciador):
+        nome = input("Nome: ")
+        telefone = input("Telefone: ")
+        email = input("Email: ")
+        contato = Contato(nome, telefone, email)
+        gerenciador.adicionar_contato(contato)
+        print("Contato adicionado com sucesso!")
+        
+#### Descrição: 
+- Coleta informações do usuário para adicionar um novo contato e chama o método correspondente no gerenciador.
+
+#### remover_contato
+    def remover_contato(gerenciador):
+        nome = input("Nome do contato a ser removido: ")
+        gerenciador.remover_contato(nome)
+        print("Contato removido com sucesso!")
+        
+#### Descrição: 
+- Coleta o nome do contato a ser removido e chama o método correspondente no gerenciador.
+
+#### listar_contatos
+    def listar_contatos(gerenciador):
+        print("Lista de Contatos:")
+        gerenciador.listar_contatos()
+        
+#### Descrição: 
+- Exibe todos os contatos armazenados no sistema.
+
+#### buscar_contato
+    def buscar_contato(gerenciador):
+        termo = input("Nome do contato a buscar: ")
+        resultados = gerenciador.buscar_contato(termo)
+        if resultados:
+            print("Contatos encontrados:")
+            for contato in resultados:
+                print(contato)
+        else:
+            print("Contato não encontrado.")
+
+#### Descrição: 
+- Coleta o termo de busca do usuário, realiza a busca utilizando a estratégia definida e exibe os resultados.
+
+#### main
+    def main():
+        gerenciador = GerenciadorContatos()
+        gerenciador_com_log = GerenciadorComLog(gerenciador)
+        estrategia_busca = EstrategiaBuscaPorNome()
+        gerenciador_com_log.set_estrategia_busca(estrategia_busca)
+
+        while True:
+            mostrar_menu()
+            opcao = input("Opção: ")
+
+            if opcao == "1":
+                adicionar_contato(gerenciador_com_log)
+            elif opcao == "2":
+                remover_contato(gerenciador_com_log)
+            elif opcao == "3":
+                    listar_contatos(gerenciador_com_log)
+            elif opcao == "4":
+                buscar_contato(gerenciador_com_log)
+            elif opcao == "5":
+                print("Saindo do sistema. Até logo!")
+                break
+            else:
+                print("Opção inválida! Por favor, tente novamente.")
+
+    if __name__ == "__main__":
+        main()
+
+#### Descrição: 
+- Função principal que inicializa o gerenciador de contatos com o decorator de logging e a estratégia de busca por nome. Controla o fluxo do menu e direciona as operações conforme a escolha do usuário.
 
 ## Estrutura de Arquivos
 
-- index.js: Arquivo principal do sistema, contém todas as classes e a lógica de CLI.
+- gerenciamento.py: Arquivo principal do sistema, contém todas as classes e a lógica de CLI.
 - README.md: Este arquivo, com a documentação do projeto.
 
 ## Autores
 
-Este projeto foi desenvolvido por Murilo Luiz Calore Ritto.
+Este projeto foi desenvolvido por Murilo Luiz Calore Ritto e Pedro Henrique Vinchi.
+
+
