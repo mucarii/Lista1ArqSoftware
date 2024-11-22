@@ -49,7 +49,7 @@ Para a funcionalidade de busca de contatos. O padrão Strategy permite que difer
 
 ### Padrão Strategy: Busca de Contatos
 ### Classes Envolvidas
-#### 1. Classe Abstrata EstrategiaBusca
+#### Classe Abstrata EstrategiaBusca
 
    ```python
         from abc import ABC, abstractmethod
@@ -62,8 +62,8 @@ Para a funcionalidade de busca de contatos. O padrão Strategy permite que difer
 - Descrição: Define a interface para as estratégias de busca.
 - Métodos:
 
-    - __buscar__: Método abstrato que deve ser implementado por todas as estratégias concretas.
-#### 2. Classe Concreta EstrategiaBuscaPorNome
+    - __buscar__: Método abstrato que deve ser implementado por todas as estratégias.
+#### Classe EstrategiaBuscaPorNome
    ```python
         class EstrategiaBuscaPorNome(EstrategiaBusca):
         def buscar(self, contatos, busca):
